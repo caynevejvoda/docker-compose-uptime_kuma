@@ -1,0 +1,29 @@
+version: "3.8"
+
+
+
+services:
+  uptime-kuma:
+    container_name: uptime-kuma
+    image: louislam/uptime-kuma
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_default"
+      - "traefik.http.routers.uptime-kuma.rule=Host(`${UPTIMEKUMA_DOMAIN}`)"
+      - "traefik.http.routers.uptime-kuma.entrypoints=websecure"
+      - "traefik.http.routers.uptime-kuma.tls.certresolver=${TLS_RESOLVER}"
+    volumes:
+      - "uptime-kuma:/app/data"
+    networks:
+  	  - "proxy"
+
+
+
+volumes:
+  uptime-kuma:
+
+
+networks:
+  proxy:
+  	name: traefik_default
